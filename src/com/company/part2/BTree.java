@@ -33,7 +33,7 @@ public class BTree {
     private Node root;
 
     // Search the key
-    private Node Search(Node x, int key) {
+    private Node search(Node x, int key) {
         int i = 0;
         if (x == null)
             return x;
@@ -48,12 +48,12 @@ public class BTree {
         if (x.leaf) {
             return null;
         } else {
-            return Search(x.child[i], key);
+            return search(x.child[i], key);
         }
     }
 
     // Split function
-    private void Split(Node x, int pos, Node y) {
+    private void split(Node x, int pos, Node y) {
         Node z = new Node();
         z.leaf = y.leaf;
         z.n = T - 1;
@@ -79,7 +79,7 @@ public class BTree {
     }
 
     // Insert the key
-    public void Insert(final int key) {
+    public void insert(final int key) {
         Node r = root;
         if (r.n == 2 * T - 1) {
             Node s = new Node();
@@ -87,15 +87,15 @@ public class BTree {
             s.leaf = false;
             s.n = 0;
             s.child[0] = r;
-            Split(s, 0, r);
-            _Insert(s, key);
+            split(s, 0, r);
+            _insert(s, key);
         } else {
-            _Insert(r, key);
+            _insert(r, key);
         }
     }
 
     // Insert the node
-    final private void _Insert(Node x, int k) {
+    final private void _insert(Node x, int k) {
 
         if (x.leaf) {
             int i = 0;
@@ -112,21 +112,21 @@ public class BTree {
             i++;
             Node tmp = x.child[i];
             if (tmp.n == 2 * T - 1) {
-                Split(x, i, tmp);
+                split(x, i, tmp);
                 if (k > x.key[i]) {
                     i++;
                 }
             }
-            _Insert(x.child[i], k);
+            _insert(x.child[i], k);
         }
 
     }
 
-    public void Show(ArrayList<Integer> answer) {
-        Show(root, answer);
+    public void show(ArrayList<Integer> answer) {
+        show(root, answer);
     }
 
-    private void Remove(Node x, int key) {
+    private void remove(Node x, int key) {
         int pos = x.Find(key);
         if (pos != -1) {
             if (x.leaf) {
@@ -156,7 +156,7 @@ public class BTree {
                             pred = pred.child[pred.n];
                         }
                     }
-                    Remove(pred, predKey);
+                    remove(pred, predKey);
                     x.key[pos] = predKey;
                     return;
                 }
@@ -175,7 +175,7 @@ public class BTree {
                             }
                         }
                     }
-                    Remove(nextNode, nextKey);
+                    remove(nextNode, nextKey);
                     x.key[pos] = nextKey;
                     return;
                 }
@@ -208,7 +208,7 @@ public class BTree {
                     }
                     x = x.child[0];
                 }
-                Remove(pred, key);
+                remove(pred, key);
                 return;
             }
         } else {
@@ -219,7 +219,7 @@ public class BTree {
             }
             Node tmp = x.child[pos];
             if (tmp.n >= T) {
-                Remove(tmp, key);
+                remove(tmp, key);
                 return;
             }
             if (true) {
@@ -239,7 +239,7 @@ public class BTree {
                         nb.child[i - 1] = nb.child[i];
                     }
                     nb.n--;
-                    Remove(tmp, key);
+                    remove(tmp, key);
                     return;
                 } else if (pos != 0 && x.child[pos - 1].n >= T) {
 
@@ -258,7 +258,7 @@ public class BTree {
                     }
                     tmp.child[0] = child;
                     tmp.n++;
-                    Remove(tmp, key);
+                    remove(tmp, key);
                     return;
                 } else {
                     Node lt = null;
@@ -297,26 +297,26 @@ public class BTree {
                         }
                         x = x.child[0];
                     }
-                    Remove(lt, key);
+                    remove(lt, key);
                     return;
                 }
             }
         }
     }
 
-    public void Remove(int key) {
-        Node x = Search(root, key);
+    public void remove(int key) {
+        Node x = search(root, key);
         if (x == null) {
             return;
         }
-        Remove(root, key);
+        remove(root, key);
     }
 
     public void Task(int a, int b) {
         Stack<Integer> st = new Stack<>();
         FindKeys(a, b, root, st);
         while (st.isEmpty() == false) {
-            this.Remove(root, st.pop());
+            this.remove(root, st.pop());
         }
     }
 
@@ -335,7 +335,7 @@ public class BTree {
     }
 
     public boolean Contain(int k) {
-        if (this.Search(root, k) != null) {
+        if (this.search(root, k) != null) {
             return true;
         } else {
             return false;
@@ -343,20 +343,26 @@ public class BTree {
     }
 
     // Show the node
-    private void Show(Node x, ArrayList<Integer> answer) {
+    private void show(Node x, ArrayList<Integer> answer) {
         //assert (x == null);
         for (int i = 0; i < x.n; i++) {
             answer.add(x.key[i]);
         }
         if (!x.leaf) {
             for (int i = 0; i < x.n + 1; i++) {
-                Show(x.child[i], answer);
+                show(x.child[i], answer);
             }
         }
     }
 
-    public int Find(int key) {
+    public int find(int key) {
         return root.Find(key);
+    }
+
+    public void init(int[] mass) {
+        for (int i = 0; i < mass.length; i ++) {
+            this.insert(mass[i]);
+        }
     }
 
 }

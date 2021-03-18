@@ -1,8 +1,14 @@
-package com.company.part3;
+package com.company.test;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import com.company.part3.Door;
+import com.company.part3.Human;
+import com.company.part3.Monkey;
+import com.company.part3.Voice;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ModelTest {
     private Human human;
@@ -11,7 +17,7 @@ public class ModelTest {
     private Voice voice;
     private Door lightDoor;
 
-    @Before
+    @BeforeEach
     public void init() {
         human = new Human("Артур", "Витягорский");
         heavyDoor = new Door("дверь кабины", true, 18, "деревянная");
@@ -22,24 +28,24 @@ public class ModelTest {
 
     @Test
     public void openTheDoor() {
-        Assert.assertFalse(human.leanOnShoulder(heavyDoor));
-        Assert.assertTrue(human.leanOnShoulder(lightDoor));
+        Assertions.assertFalse(human.leanOnShoulder(heavyDoor));
+        Assertions.assertTrue(human.leanOnShoulder(lightDoor));
     }
 
     @Test
     public void lockUp() {
-        Assert.assertFalse(human.lockUp(heavyDoor));
-        Assert.assertTrue(human.lockUp(lightDoor));
+        Assertions.assertFalse(human.lockUp(heavyDoor));
+        Assertions.assertTrue(human.lockUp(lightDoor));
     }
 
     @Test
     public void pushIn() {
-        Assert.assertTrue(monkey.pushIn(lightDoor));
+        Assertions.assertTrue(monkey.pushIn(lightDoor));
     }
 
     @Test
     public void squeal() {
-        Assert.assertTrue(voice.squeal("безумно"));
+        Assertions.assertTrue(voice.squeal("безумно"));
     }
 
 }
